@@ -1,0 +1,93 @@
+import simplegui
+
+#Global Variables for frame Size
+frame_width = int(input("what do you want the initial width to be: "))
+frame_height = int(input("what do you wantt the initial height to be: "))
+
+frame = None #Global reference to be the frame
+
+# ShapeVisibility Toggles
+show_square = True
+show_circle = True
+show_triangle = True
+show_ellipse = True
+
+# Shape Drawing Functions
+
+def draw_triangle(canvas, cx, cy, size):
+    """Draws a triangle"""
+    half_size = size / 2
+    canvas.draw_polygon([(cx, cy - half_size),
+                         (cx - half_size, cy + half_size),
+                         (cx + half_size, cy + half_size)],
+                         2, "Blue", "Blue") #Blue triangle
+    
+def draw_circle(canvas, cx, cy, radius):
+    """Draws a circle"""
+    canvas.draw_circle((cx,cy), radius, 2,"Green","Red") #Circle
+    
+def draw_ellipse(canvas, cx,cy,width, height):
+    """Draws a ellipse"""
+    canvas.draw_circle((cx, cy), width/ 2,2, "Purple", "Purple") #Ellipse
+
+def draw_polygon(canvas, cx, cy, size):
+    """Draws a square"""
+    half_size = size / 2
+    canvas.draw_polygon([(cx - half_size, cy - half_size),
+                         (cx + half_size, cy - half_size),
+                         (cx + half_size, cy + half_size),
+                         (cx - half_size, cy + half_size)],
+                         2, "Pink", "White") #Square
+                      
+# Draw funtion
+def draw(canvas):
+    # Calculate the quadrants
+    quadrant_width = frame_width / 2
+    quadrant_height = frame_height /2
+
+# Draw each shape in a different quadrant if toggled
+    if show_square:
+        draw_polygon(canvas, quadrant_width / 2, quadrant_height / 2, 100)  # square in top-left
+        
+#Draw each shape in a different quadrant if toggled
+    if show_triangle:
+        draw_triangle(canvas, quadrant_width /2, frame_height - quadrant_height / 2, 100) # triangle in bottom-left
+
+    if show_circle:
+        draw_circle(canvas, frame_width - (quadrant_width / 4), quadrant_height / 2, 50)  # circle in top-right
+        
+    if show_ellipse:
+        draw_ellipse(canvas, frame_width - (quadrant_width / 4), frame_height - (quadrant_height / 4), 150, 100)  # ellipse in bottom-right  
+        
+#Button handlers
+def toggle_square():
+    global show_square
+    show_square = not show_square
+
+def toggle_triangle():
+    global show_triangle
+    show_triangle = not show_triangle
+
+def toggle_circle():
+    global show_circle
+    show_circle = not show_circle
+ 
+def toggle_ellipse():
+    global show_ellipse
+    show_ellipse = not show_ellipse
+
+
+
+# Frame Creation
+def create_frame():
+    global frame
+    frame = simplegui.create_frame("Shape Drawing Guide with Toggles", frame_width, frame_height)
+    frame.set_draw_handler(draw) 
+    
+    frame.add_button("Toggle triangle", toggle_triangle, 150)
+    
+    frame.start()
+
+# Start the progress
+create_frame()
+
